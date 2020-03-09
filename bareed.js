@@ -95,11 +95,11 @@ class Person {
 class Vendor extends Person {
   range = 5;
   price = 1;
-  sellTo = (Customer, numberOfIceCreams) => {
-    this.moveTo(Customer.location);
+  sellTo = (customer, numberOfIceCreams) => {
+    this.moveTo(customer.location);
     let total = numberOfIceCreams * this.price;
     this.wallet.credit(total);
-    Customer.wallet.debit(total);
+    customer.wallet.debit(total);
   };
   // implement Vendor!
 }
@@ -129,7 +129,10 @@ class Customer extends Person {
     return this.location.distanceTo(vendor.location) <= vendor.range;
   };
   requestIceCream = (vendor, numberOfIceCreams) => {
-    if (this._isInRange(vendor) || this._haveEnoughMoney(vendor)) {
+    if (
+      this._isInRange(vendor) &&
+      this._haveEnoughMoney(vendor, numberOfIceCreams)
+    ) {
       vendor.sellTo(this, numberOfIceCreams);
     }
   };
